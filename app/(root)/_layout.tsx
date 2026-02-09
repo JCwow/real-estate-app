@@ -1,24 +1,16 @@
-import '@/global.css';
-import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
-import { useEffect } from 'react';
-export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
-    "Rubik-Bold": require('../../assets/fonts/Rubik-Bold.ttf'),
-    "Rubik-ExtraBold": require('../../assets/fonts/Rubik-ExtraBold.ttf'),
-    "Rubik-Light": require('../../assets/fonts/Rubik-Light.ttf'),
-    "Rubik-Medium": require('../../assets/fonts/Rubik-Medium.ttf'),
-    "Rubik-Regular": require('../../assets/fonts/Rubik-Regular.ttf'),
-    "Rubik-SemiBold": require('../../assets/fonts/Rubik-SemiBold.ttf')
-  })
-
-  useEffect(() => {
-    if(fontsLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded])
-
-  if(!fontsLoaded) return null;
-  
-  return <Stack screenOptions={{headerShown: false}}/>;
+import { useGlobalContext } from "@/lib/global-provider";
+import { Redirect, Slot } from "expo-router";
+import { ActivityIndicator } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+export default function AppLayout(){
+  const {loading, isLoggedIn} = useGlobalContext();
+  if(loading){
+    return (
+      <SafeAreaView className="bg-white h-full flex justify-center items-center">
+        <ActivityIndicator className="text-primary-300" size={"large"}></ActivityIndicator>
+      </SafeAreaView>
+    )
+  }
+  if(!isLoggedIn) return <Redirect href="/sign-in"></Redirect>
+  return <Slot></Slot>
 }
