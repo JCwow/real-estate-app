@@ -46,7 +46,6 @@ export default function Index() {
         keyExtractor={(item) => item?.$id || Math.random().toString()}
         numColumns={2}
         contentContainerClassName="pb-32"
-        columnWrapperClassName="flex gap-5 px-5"
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           loading ? (
